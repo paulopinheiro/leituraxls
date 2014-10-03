@@ -1,11 +1,18 @@
-package br.com.paulopinheiro.leituraxls;
+package br.com.paulopinheiro.leituraxls.control;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.apache.poi.hssf.usermodel.HSSFOptimiser;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -17,12 +24,14 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 public class Resumo {
     private List<CellStyle> estilosExistentes;
     private List<CellStyle> estilosResumidos;
+    private final File arquivo;
     private final FileInputStream inp;
     private final Workbook wb;
 
     public Resumo(String arquivo) throws FileNotFoundException, IOException, InvalidFormatException {
         this.inp = new FileInputStream(arquivo);
         this.wb = WorkbookFactory.create(inp);
+        this.arquivo = new File(arquivo);
         populateEstilosExistentes();
         extractEstilosResumidos();
     }
@@ -65,6 +74,13 @@ public class Resumo {
     }
 
     private boolean igual(CellStyle cs1, CellStyle cs2) {
+        // Ler http://web.archiveorange.com/archive/v/5mbAgg5cPXlTJzaKJ46q
+        // A princípio a solução seria criar um novo workbook a partir do anterior
+        // E aplicar estilos semelhantes, baseados no array "estilosResumidos"
+        // Ao final elimina-se o workbook original e insere-se este
+        // Isto porque não temos acesso a um array de estilos do POI, apenas um
+        // iterador e um método "getStyleAt"
+
         if (cs1.getAlignment()!=cs2.getAlignment()) return false;
 
         if (cs1.getBorderBottom()!=cs2.getBorderBottom()) return false;
@@ -113,6 +129,15 @@ public class Resumo {
         return this.estilosResumidos;
     }
 
+    public void otimizar() throws FileNotFoundException, IOException {
+        // Ler http://web.archiveorange.com/archive/v/5mbAgg5cPXlTJzaKJ46q
+        HSSFOptimiser.optimiseCellStyles((HSSFWorkbook) this.wb);
+
+        FileOutputStream out = new FileOutputStream(arquivo.getAbsolutePath() + " otimizado");
+        this.wb.write(out);
+        out.close();
+    }
+
     public int quantEstilosExistentes() {
         return this.getEstilosExistentes().size();
     }
@@ -121,4 +146,10 @@ public class Resumo {
         return this.getEstilosResumidos().size();
     }
 
+    public String percentualReducao() {
+        DecimalFormat df = new DecimalFormat("0.00");
+        BigDecimal bd = new BigDecimal(100*((double)quantEstilosResumidos()/(double)quantEstilosExistentes())).setScale(2, RoundingMode.HALF_DOWN);
+        
+        return df.format(bd);
+    }
 }
