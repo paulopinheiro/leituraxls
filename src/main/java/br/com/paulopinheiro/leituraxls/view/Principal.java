@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -57,8 +58,13 @@ public class Principal extends javax.swing.JFrame {
             this.jtfQuantResumido.setText(String.valueOf(resumo.quantEstilosResumidos()));
             this.jtfPercentualReducao.setText(String.valueOf(resumo.percentualReducao()));
         } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, ex.getLocalizedMessage(), "Erro de entrada/saída", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InvalidFormatException ex) {
+            JOptionPane.showMessageDialog(null, ex.getLocalizedMessage(), "Formato inválido", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(null, "Arquivo inválido: " + ex.getLocalizedMessage(), "Arquivo inválido", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -236,6 +242,7 @@ public class Principal extends javax.swing.JFrame {
         try {
             resumo.otimizar();
         } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, ex.getLocalizedMessage(), "Erro de entrada/saída", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jbtOtimizarActionPerformed
@@ -264,18 +271,23 @@ public class Principal extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, ex.getLocalizedMessage(), "Classe de look and feel não encontrada", JOptionPane.ERROR_MESSAGE);
             java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
+            JOptionPane.showMessageDialog(null, ex.getLocalizedMessage(), "Erro de Instanciação de classe", JOptionPane.ERROR_MESSAGE);
             java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
+            JOptionPane.showMessageDialog(null, ex.getLocalizedMessage(), "Erro acesso ilegal", JOptionPane.ERROR_MESSAGE);
             java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            JOptionPane.showMessageDialog(null, ex.getLocalizedMessage(), "Erro look-and-feel", JOptionPane.ERROR_MESSAGE);
             java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Principal().setVisible(true);
             }

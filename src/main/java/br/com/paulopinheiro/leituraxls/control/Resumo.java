@@ -169,7 +169,6 @@ public class Resumo {
     }
 
     public boolean isOtimizavel() {
-        if (quantEstilosExistentes() - quantEstilosResumidos() > 0) return true;
-        return false;
+        return quantEstilosExistentes() - quantEstilosResumidos() > 0;
     }
 }
