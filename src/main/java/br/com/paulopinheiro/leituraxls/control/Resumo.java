@@ -11,8 +11,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import org.apache.poi.hssf.usermodel.HSSFOptimiser;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -74,13 +72,7 @@ public class Resumo {
     }
 
     private boolean igual(CellStyle cs1, CellStyle cs2) {
-        // Ler http://web.archiveorange.com/archive/v/5mbAgg5cPXlTJzaKJ46q
-        // A princípio a solução seria criar um novo workbook a partir do anterior
-        // E aplicar estilos semelhantes, baseados no array "estilosResumidos"
-        // Ao final elimina-se o workbook original e insere-se este
-        // Isto porque não temos acesso a um array de estilos do POI, apenas um
-        // iterador e um método "getStyleAt"
-
+        if (cs1.equals(cs2)) return true;
         if (cs1.getAlignment()!=cs2.getAlignment()) return false;
 
         if (cs1.getBorderBottom()!=cs2.getBorderBottom()) return false;
@@ -130,12 +122,35 @@ public class Resumo {
     }
 
     public void otimizar() throws FileNotFoundException, IOException {
-        // Ler http://web.archiveorange.com/archive/v/5mbAgg5cPXlTJzaKJ46q
-        HSSFOptimiser.optimiseCellStyles((HSSFWorkbook) this.wb);
+        Workbook wbOtimizado = this.wb;
+
+        for (int i=0;i<wbOtimizado.getNumberOfSheets();i++) {
+            Sheet sheet = wbOtimizado.getSheetAt(i);
+
+            Iterator<Row> iRow = sheet.rowIterator();
+
+            while (iRow.hasNext()) {
+                Row r = iRow.next();
+                Iterator<Cell> iCell = r.cellIterator();
+
+                while (iCell.hasNext()) {
+                    Cell c = iCell.next();
+                    c.setCellStyle(correspondente(c.getCellStyle()));
+                }
+            }
+        }
+        
 
         FileOutputStream out = new FileOutputStream(arquivo.getAbsolutePath() + " otimizado");
-        this.wb.write(out);
+        wbOtimizado.write(out);
         out.close();
+    }
+
+    private CellStyle correspondente(CellStyle c) {
+        for (CellStyle cs:this.getEstilosResumidos()) {
+            if (igual(cs,c)) return cs;
+        }
+        return c;
     }
 
     public int quantEstilosExistentes() {
@@ -148,7 +163,7 @@ public class Resumo {
 
     public String percentualReducao() {
         DecimalFormat df = new DecimalFormat("0.00");
-        BigDecimal bd = new BigDecimal(100*((double)quantEstilosResumidos()/(double)quantEstilosExistentes())).setScale(2, RoundingMode.HALF_DOWN);
+        BigDecimal bd = new BigDecimal(100*(1-((double)quantEstilosResumidos()/(double)quantEstilosExistentes()))).setScale(2, RoundingMode.HALF_DOWN);
         
         return df.format(bd);
     }
