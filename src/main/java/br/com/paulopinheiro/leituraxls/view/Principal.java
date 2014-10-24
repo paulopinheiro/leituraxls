@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.paulopinheiro.leituraxls.view;
 
 import br.com.paulopinheiro.leituraxls.control.Resumo;
@@ -14,14 +9,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
-/**
- *
- * @author 2360
- */
 public class Principal extends javax.swing.JFrame {
-    /**
-     * Creates new form Principal
-     */
     private Resumo resumo;
 
     public Principal() {
@@ -85,6 +73,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jtfPercentualReducao = new javax.swing.JTextField();
         jbtOtimizar = new javax.swing.JButton();
+        jbtLimpar = new javax.swing.JButton();
 
         jfcArquivo.setDialogTitle("Selecione o arquivo");
 
@@ -177,6 +166,13 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        jbtLimpar.setText("Limpar");
+        jbtLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtLimparActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -192,6 +188,8 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(jbtAnalisar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jbtOtimizar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbtLimpar)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(panAnalise, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -206,7 +204,8 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtAnalisar)
-                    .addComponent(jbtOtimizar))
+                    .addComponent(jbtOtimizar)
+                    .addComponent(jbtLimpar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panAnalise, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -251,6 +250,13 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jbtOtimizarActionPerformed
 
+    private void jbtLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtLimparActionPerformed
+        this.jtfArquivo.setText("");
+        this.jtfPercentualReducao.setText("");
+        this.jtfQuantAtual.setText("");
+        this.jtfQuantResumido.setText("");
+    }//GEN-LAST:event_jbtLimparActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -292,6 +298,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JButton jbtAnalisar;
     private javax.swing.JButton jbtArquivo;
+    private javax.swing.JButton jbtLimpar;
     private javax.swing.JButton jbtOtimizar;
     private javax.swing.JFileChooser jfcArquivo;
     private javax.swing.JTextField jtfArquivo;

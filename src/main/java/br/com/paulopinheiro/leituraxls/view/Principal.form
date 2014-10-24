@@ -43,6 +43,8 @@
                       <Component id="jbtAnalisar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jbtOtimizar" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jbtLimpar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Component id="panAnalise" max="32767" attributes="0"/>
@@ -63,6 +65,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jbtAnalisar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jbtOtimizar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jbtLimpar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="panAnalise" min="-2" max="-2" attributes="0"/>
@@ -196,6 +199,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtOtimizarActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jbtLimpar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Limpar"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtLimparActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
