@@ -167,4 +167,9 @@ public class Resumo {
         
         return df.format(bd);
     }
+
+    public boolean isOtimizavel() {
+        if (quantEstilosExistentes() - quantEstilosResumidos() > 0) return true;
+        return false;
+    }
 }

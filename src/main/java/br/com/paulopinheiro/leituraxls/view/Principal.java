@@ -10,6 +10,7 @@ import javax.swing.event.DocumentListener;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 public class Principal extends javax.swing.JFrame {
+
     private Resumo resumo;
 
     public Principal() {
@@ -19,7 +20,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void outrasInicializacoes() {
         listenerCampoArquivo();
-        
+
     }
 
     private void listenerCampoArquivo() {
@@ -41,15 +42,25 @@ public class Principal extends javax.swing.JFrame {
 
             private void atualizaCampos() {
                 if (jtfArquivo.getText().isEmpty()) {
-                    jbtAnalisar.setEnabled(false);
                     jbtOtimizar.setEnabled(false);
-                }
-                else {
-                    jbtAnalisar.setEnabled(true);
+                } else {
                     jbtOtimizar.setEnabled(true);
                 }
             }
-        });        
+        });
+    }
+
+    private void analisar() {
+        try {
+            resumo = new Resumo(this.jtfArquivo.getText());
+            this.jtfQuantAtual.setText(String.valueOf(resumo.quantEstilosExistentes()));
+            this.jtfQuantResumido.setText(String.valueOf(resumo.quantEstilosResumidos()));
+            this.jtfPercentualReducao.setText(String.valueOf(resumo.percentualReducao()));
+        } catch (IOException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidFormatException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -64,7 +75,6 @@ public class Principal extends javax.swing.JFrame {
         jfcArquivo = new javax.swing.JFileChooser();
         jbtArquivo = new javax.swing.JButton();
         jtfArquivo = new javax.swing.JTextField();
-        jbtAnalisar = new javax.swing.JButton();
         panAnalise = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -87,13 +97,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        jbtAnalisar.setText("Analisar");
-        jbtAnalisar.setEnabled(false);
-        jbtAnalisar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtAnalisarActionPerformed(evt);
-            }
-        });
+        jtfArquivo.setEditable(false);
 
         panAnalise.setBorder(javax.swing.BorderFactory.createTitledBorder("Análise"));
 
@@ -185,8 +189,6 @@ public class Principal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jtfArquivo))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jbtAnalisar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jbtOtimizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jbtLimpar)
@@ -203,7 +205,6 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jtfArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbtAnalisar)
                     .addComponent(jbtOtimizar)
                     .addComponent(jbtLimpar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -222,21 +223,10 @@ public class Principal extends javax.swing.JFrame {
         int returnVal = this.jfcArquivo.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             this.jtfArquivo.setText(this.jfcArquivo.getSelectedFile().getAbsolutePath());
+            analisar();
+            this.jbtOtimizar.setEnabled(this.resumo.isOtimizavel());
         }
     }//GEN-LAST:event_jbtArquivoActionPerformed
-
-    private void jbtAnalisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAnalisarActionPerformed
-        try {
-            resumo = new Resumo(this.jtfArquivo.getText());
-            this.jtfQuantAtual.setText(String.valueOf(resumo.quantEstilosExistentes()));
-            this.jtfQuantResumido.setText(String.valueOf(resumo.quantEstilosResumidos()));
-            this.jtfPercentualReducao.setText(String.valueOf(resumo.percentualReducao()));
-        } catch (IOException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvalidFormatException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jbtAnalisarActionPerformed
 
     private void jtfPercentualReducaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfPercentualReducaoActionPerformed
         // TODO add your handling code here:
@@ -296,7 +286,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JButton jbtAnalisar;
     private javax.swing.JButton jbtArquivo;
     private javax.swing.JButton jbtLimpar;
     private javax.swing.JButton jbtOtimizar;

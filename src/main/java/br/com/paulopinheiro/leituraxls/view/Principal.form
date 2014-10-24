@@ -40,8 +40,6 @@
                       <Component id="jtfArquivo" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Component id="jbtAnalisar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jbtOtimizar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jbtLimpar" min="-2" max="-2" attributes="0"/>
@@ -63,7 +61,6 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jbtAnalisar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jbtOtimizar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jbtLimpar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -84,15 +81,9 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jtfArquivo">
-    </Component>
-    <Component class="javax.swing.JButton" name="jbtAnalisar">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Analisar"/>
-        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="editable" type="boolean" value="false"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtAnalisarActionPerformed"/>
-      </Events>
     </Component>
     <Container class="javax.swing.JPanel" name="panAnalise">
       <Properties>
